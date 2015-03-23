@@ -16,10 +16,10 @@ defmodule Showoff.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/circle", PageController, :circle
   end
 
-  # Other scopes may use custom stacks.
-  # scope "/api", Showoff do
-  #   pipe_through :api
-  # end
+  socket "/ws", Showoff do
+    channel "svgs:index", SVGChannel
+  end
 end
