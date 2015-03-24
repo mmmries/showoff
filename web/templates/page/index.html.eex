@@ -11,10 +11,27 @@
     });
 
     channel.on("svg:show", function(message) {
-      var body = document.body;
-      body.innerHTML = message.svg;
+      var screen = document.getElementById("screen");
+      screen.innerHTML = message.svg;
     });
   });
+
+  function submitDrawing() {
+    var drawing_text = document.getElementById("drawing_text").value;
+    $.post("/publish", {drawing_text: drawing_text}, function(){ }, 'json');
+  }
 </script>
 
-<h2>Let's See Some SVGs!</h2>
+<div class="row">
+  <h2>Let's See Some SVGs!</h2>
+</div>
+
+<div class="row">
+  <div id="screen">
+  </div>
+  <div id="input">
+    <h3>What Should I Draw?</h3>
+    <textarea id="drawing_text"></textarea>
+    <button onClick="submitDrawing()">Send Drawing</button>
+  </div>
+</div>

@@ -5,7 +5,6 @@ defmodule Showoff.Router do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_flash
-    plug :protect_from_forgery
   end
 
   pipeline :api do
@@ -17,6 +16,7 @@ defmodule Showoff.Router do
 
     get "/", PageController, :index
     get "/circle", PageController, :circle
+    post "/publish", PageController, :publish
   end
 
   socket "/ws", Showoff do
