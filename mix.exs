@@ -25,6 +25,7 @@ defmodule Showoff.Mixfile do
     [
       {:phoenix, "~> 0.10.0"},
       {:cowboy, "~> 1.0"},
-      {:chunky_svg, path: "../chunky_svg"}]
+      {:chunky_svg, "~> 0.0.1"},
+    ]
   end
 end
