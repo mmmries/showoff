@@ -9,8 +9,6 @@ defmodule Showoff do
     children = [
       # Start the endpoint when the application starts
       supervisor(Showoff.Endpoint, []),
-      # Start the Ecto repository
-      worker(Showoff.Repo, []),
       # Here you could define other workers and supervisors as children
       # worker(Showoff.Worker, [arg1, arg2, arg3]),
     ]

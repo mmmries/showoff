@@ -15,7 +15,6 @@ defmodule Showoff.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
-    get "/circle", PageController, :circle
     post "/publish", PageController, :publish
   end
 
