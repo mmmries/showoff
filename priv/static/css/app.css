@@ -27,6 +27,7 @@ h2 { clear: both; }
 }
 
 #input {
+  flex-grow: 1;
   width: 400px;
   margin: 20px;
   padding: 20px;
@@ -39,8 +40,8 @@ h2 { clear: both; }
   height: 200px;
   clear: both;
 
-  font-size: 13pt;
-  font-family: Consolas;
+  font-size: 11pt;
+  font-family: Courier, Consolas;
 }
 
 svg { height: 100%; width: 100%; }
