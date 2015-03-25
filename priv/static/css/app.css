@@ -1,6 +1,6 @@
 div.row {
   display: flex;
-  felix-flow: row wrap;
+  flex-flow: row wrap;
   justify-content: center;
   align-content: center;
   align-items: center;
