@@ -11,7 +11,8 @@ defmodule TermParserTest do
   end
 
   test "it returns an error for invalid syntax" do
-    assert {:error, _} = parse("{14, ..")
+    assert {:error, err} = parse("{14, ..")
+    assert err == "Parsing Error: missing terminator: } (for \"{\" starting at line 1)"
   end
 
   test "it returns an error for executable code" do

@@ -2,7 +2,7 @@ defmodule Showoff.TermParser do
   def parse(str) when is_binary(str)do
     case str |> Code.string_to_quoted do
       {:ok, terms} -> hydrate_terms(terms)
-      {:error, err} -> {:error, err}
+      {:error, {_line, message, _}} -> {:error, "Parsing Error: #{message}"}
     end
   end
 
@@ -10,7 +10,7 @@ defmodule Showoff.TermParser do
     try do
       {:ok, _parse(terms)}
     rescue
-      e in ArgumentError -> {:error, e}
+      e in ArgumentError -> {:error, e.message}
     end
   end
 

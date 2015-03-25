@@ -8,6 +8,11 @@ div.row {
 
 h2 { clear: both; }
 
+.error {
+  color: red;
+  font-size: 11pt;
+}
+
 #screen {
   display: flex;
   flex-flow: row wrap;

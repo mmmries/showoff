@@ -18,7 +18,27 @@
 
   function submitDrawing() {
     var drawing_text = document.getElementById("drawing_text").value;
-    $.post("/publish", {drawing_text: drawing_text}, function(){ }, 'json');
+    $('.error').text('');
+    $.ajax({
+      type: "POST",
+      url: "/publish",
+      data: {drawing_text: drawing_text},
+      dataType: 'json',
+      success: function(response){
+        console.log('success', response);
+      },
+      error: failedToDraw
+    });
+  }
+
+  function failedToDraw(error) {
+    var message = "an error occured when trying to draw that shape";
+
+    if( error.responseJSON && error.responseJSON.error ) {
+      message = error.responseJSON.error;
+    }
+
+    $('.error').text(message);
   }
 </script>
 
@@ -33,5 +53,6 @@
     <h3>What Should I Draw?</h3>
     <textarea id="drawing_text"></textarea>
     <button onClick="submitDrawing()">Send Drawing</button>
+    <p class="error"></p>
   </div>
 </div>

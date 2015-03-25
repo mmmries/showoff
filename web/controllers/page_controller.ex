@@ -12,7 +12,7 @@ defmodule Showoff.PageController do
       {:ok, drawing_terms} ->
         svg = ChunkySVG.render(drawing_terms)
         Showoff.Endpoint.broadcast! "svgs:index", "svg:show", %{svg: svg}
-        text conn, "OK"
+        json conn, %{success: true}
       {:error, err} ->
         conn |> put_status(422) |> json %{error: err}
     end
