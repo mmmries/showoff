@@ -2,14 +2,12 @@ defmodule Showoff.SVGChannel do
   use Phoenix.Channel
   require Logger
 
-  def join("svgs:index", message, socket) do
-    Logger.debug "JOIN #{socket.topic}"
+  def join("svgs:index", _message, socket) do
     reply socket, "join", %{status: "connected"}
     {:ok, socket}
   end
 
-  def leave(reason, socket) do
-    Logger.debug "LEAVE #{socket.topic}"
+  def leave(_reason, socket) do
     {:ok, socket}
   end
 
