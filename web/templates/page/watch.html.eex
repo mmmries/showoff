@@ -1,15 +1,31 @@
 <script type="text/javascript">
+  var socket = new Phoenix.Socket("ws://" + location.host + "/ws");
+  socket.join("svgs:index", {}, function(channel) {
+    window.channel = channel;
+
+    channel.on("join", function(message) {
+      console.log(message);
+    });
+    channel.on("error", function(message) {
+      console.log(message);
+    });
+
+    channel.on("svg:show", function(message) {
+      var screen = document.getElementById("screen");
+      screen.innerHTML = message.svg;
+    });
+  });
+
   function submitDrawing() {
     var drawing_text = document.getElementById("drawing_text").value;
     $('.error').text('');
     $.ajax({
       type: "POST",
-      url: "/draw",
+      url: "/publish",
       data: {drawing_text: drawing_text},
       dataType: 'json',
       success: function(response){
-        var screen = document.getElementById("screen");
-        screen.innerHTML = response.svg;
+        // NO-OP
       },
       error: failedToDraw
     });
@@ -27,20 +43,19 @@
 </script>
 
 <div class="row">
-  <h2>Scratchpad: Try Drawing Something!</h2>
+  <h2>Let's See Some SVGs!</h2>
 </div>
 
 <div class="row">
-  <div class="screen" id="screen">
+  <div class="screen large" id="screen">
   </div>
+</div>
+
+<div class="row">
   <div class="input">
+    <h3>Publish Your Own Drawing</h3>
     <textarea id="drawing_text"></textarea>
     <button onClick="submitDrawing()">Send Drawing</button>
     <p class="error"></p>
-  </div>
-</div>
-
-<div class="row">
-  <div id="examples">
   </div>
 </div>
