@@ -24,6 +24,21 @@
 
     $('.error').text(message);
   }
+
+  $(function(){
+    $.getJSON("/examples", function(response) {
+      $.each(response, function(index, example){
+        var example_div = $("<div class='example'></div>");
+        $('.examples').append(example_div);
+        example_div.html(example.svg);
+
+        example_div.click(function(ev){
+          $('.input textarea').text(example.drawing_text);
+          $('#screen').html(example.svg);
+        });
+      });
+    });
+  });
 </script>
 
 <div class="row">
@@ -37,10 +52,9 @@
     <textarea id="drawing_text"></textarea>
     <button onClick="submitDrawing()">Send Drawing</button>
     <p class="error"></p>
-  </div>
-</div>
+    <h4>Examples - Click to Try Them Out</h4>
+    <div class="row examples">
 
-<div class="row">
-  <div id="examples">
+    </div>
   </div>
 </div>

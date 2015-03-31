@@ -7,6 +7,10 @@ defmodule Showoff.PageController do
     render conn, "index.html"
   end
 
+  def examples(conn, _params) do
+    conn |> json Showoff.Examples.rendered_list
+  end
+
   def watch(conn, _params) do
     render conn, "watch.html"
   end
