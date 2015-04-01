@@ -11,6 +11,7 @@ defmodule Showoff do
       supervisor(Showoff.Endpoint, []),
       # Here you could define other workers and supervisors as children
       # worker(Showoff.Worker, [arg1, arg2, arg3]),
+      worker(Showoff.RecentDrawings, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html

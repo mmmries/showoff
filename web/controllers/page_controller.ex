@@ -11,16 +11,18 @@ defmodule Showoff.PageController do
     conn |> json Showoff.Examples.rendered_list
   end
 
-  def watch(conn, _params) do
-    render conn, "watch.html"
+  def recent(conn, _params) do
+    conn |> json Showoff.RecentDrawings.get_list
   end
 
   def publish(conn, %{"drawing_text" => drawing_text}) do
     case Showoff.TermParser.parse(drawing_text) do
       {:ok, drawing_terms} ->
         svg = ChunkySVG.render(drawing_terms)
-        Showoff.Endpoint.broadcast! "svgs:index", "svg:show", %{svg: svg}
-        json conn, %{success: true}
+        drawing = %{drawing_text: drawing_text, svg: svg}
+        Showoff.Endpoint.broadcast! "svgs:index", "svg:show", drawing
+        Showoff.RecentDrawings.add_drawing(drawing)
+        json conn, drawing
       {:error, err} ->
         conn |> put_status(422) |> json %{error: err}
     end

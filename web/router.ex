@@ -16,7 +16,7 @@ defmodule Showoff.Router do
 
     get "/", PageController, :index
     get "/examples", PageController, :examples
-    get "/watch", PageController, :watch
+    get "/recent", PageController, :recent
     post "/draw", PageController, :draw
     post "/publish", PageController, :publish
   end
