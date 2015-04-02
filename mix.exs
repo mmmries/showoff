@@ -3,7 +3,7 @@ defmodule Showoff.Mixfile do
 
   def project do
     [app: :showoff,
-     version: "0.0.4",
+     version: "0.0.9",
      elixir: "~> 1.0",
      elixirc_paths: ["lib", "web"],
      compilers: [:phoenix] ++ Mix.compilers,
