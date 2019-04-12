@@ -12,7 +12,8 @@ config :showoff, ShowoffWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "oInvc+LG9tsL99Yf58LDI6RwJ9PqSpS38fJxMCqPjAMnIDDW0DJjra9TdOsA31q/",
   render_errors: [view: ShowoffWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Showoff.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Showoff.PubSub, adapter: Phoenix.PubSub.PG2],
+  live_view: [signing_salt: "growb+Aum3o5waHzehcTZ6MtwxlyL+AN"]
 
 # Configures Elixir's Logger
 config :logger, :console,

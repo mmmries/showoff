@@ -9,9 +9,8 @@ defmodule Showoff.Application do
     # List all child processes to be supervised
     children = [
       # Start the endpoint when the application starts
-      ShowoffWeb.Endpoint
-      # Starts a worker by calling: Showoff.Worker.start_link(arg)
-      # {Showoff.Worker, arg},
+      ShowoffWeb.Endpoint,
+      {Showoff.RecentDrawings, []}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
