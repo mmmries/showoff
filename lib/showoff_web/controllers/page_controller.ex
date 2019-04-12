@@ -2,7 +2,7 @@ defmodule ShowoffWeb.PageController do
   use ShowoffWeb, :controller
 
   def index(conn, _params) do
-    render(conn, "index.html")
+    Phoenix.LiveView.Controller.live_render(conn, ShowoffWeb.ScratchpadLive, session: %{})
   end
 
   def show(conn, %{"drawing_text" => drawing_text}) do
