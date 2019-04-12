@@ -1,9 +1,19 @@
 defmodule Showoff do
-  @moduledoc """
-  Showoff keeps the contexts that define your domain
-  and business logic.
+  def text_to_svg(text) do
+    case Showoff.TermParser.parse(text) do
+      {:ok, term} -> term_to_svg(term)
+      {:error, error} -> {:error, error}
+    end
+  end
 
-  Contexts are also responsible for managing your data, regardless
-  if it comes from the database, an external API or others.
-  """
+  @doc "this should really be handled by ChunkySVG, but sometimes it just crashes when the structure does not match what it expects"
+  def term_to_svg(term) do
+    try do
+      svg = ChunkySVG.render(term)
+      {:ok, svg}
+    catch
+      err -> {:error, err}
+      _reason, err -> {:error, err}
+    end
+  end
 end
