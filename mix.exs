@@ -4,8 +4,8 @@ defmodule Showoff.MixProject do
   def project do
     [
       app: :showoff,
-      version: "0.1.0",
-      elixir: "~> 1.5",
+      version: "0.2.0",
+      elixir: "~> 1.8",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
@@ -19,7 +19,7 @@ defmodule Showoff.MixProject do
   def application do
     [
       mod: {Showoff.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :xml_builder]
     ]
   end
 
@@ -33,6 +33,7 @@ defmodule Showoff.MixProject do
   defp deps do
     [
       {:chunky_svg, "~> 0.0.4"},
+      {:distillery, "~> 2.0"},
       {:phoenix, "~> 1.4.3"},
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_html, "~> 2.11"},
