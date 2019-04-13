@@ -4,7 +4,15 @@ defmodule ShowoffWeb.ScratchpadLive do
   require Logger
 
   def mount(%{}, socket) do
-    socket = socket |> update_drawing("") |> assign(:drawing_text, "") |> assign(:err, "")
+    if connected?(socket) do
+      :ok = ShowoffWeb.Endpoint.subscribe("recent_drawings")
+    end
+
+    socket = socket
+             |> update_drawing("")
+             |> assign(:drawing_text, "")
+             |> assign(:err, "")
+             |> assign(:recent, Showoff.RecentDrawings.get_list())
     {:ok, socket}
   end
 
@@ -27,6 +35,11 @@ defmodule ShowoffWeb.ScratchpadLive do
         socket = socket |> assign(:err, "an error occured trying to draw that") |> assign(:drawing_text, text)
         {:noreply, socket}
     end
+  end
+
+  def handle_info(%{event: "update", payload: %{recent: recent}}, socket) do
+    socket = assign(socket, :recent, recent)
+    {:noreply, socket}
   end
 
   def render(assigns) do
@@ -59,7 +72,7 @@ defmodule ShowoffWeb.ScratchpadLive do
       </div>
 
       <div class="row recents">
-        <%= for recent <- Showoff.RecentDrawings.get_list() do %>
+        <%= for recent <- @recent do %>
           <%= content_tag(:div, {:safe, recent.svg}, class: "example", phx_click: "example", phx_value: recent.drawing_text) %>
         <% end %>
       </div>

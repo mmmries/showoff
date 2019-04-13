@@ -17,6 +17,11 @@ defmodule Showoff.RecentDrawings do
     Agent.update(__MODULE__, fn (list) ->
       [entry | list] |> Enum.take(300)
     end)
+    ShowoffWeb.Endpoint.broadcast(
+      "recent_drawings",
+      "update",
+      %{recent: get_list()}
+    )
   end
 
   def get_list do
