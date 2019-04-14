@@ -1,30 +1,24 @@
 defmodule Showoff.RecentDrawings do
-  def child_spec(_opts) do
-    %{
-      id: __MODULE__,
-      start: {__MODULE__, :start_link, []},
-      type: :worker,
-      restart: :permanent,
-      shutdown: 500
-    }
+  alias Showoff.Drawing
+
+  def add_drawing(%Drawing{}=drawing) do
+    id = DateTime.utc_now() |> DateTime.to_unix(:millisecond)
+    true = :dets.insert_new(__MODULE__, {id, drawing})
+    publish_updated_list()
   end
 
-  def start_link do
-    Agent.start_link(fn -> Showoff.Examples.rendered_list end, name: __MODULE__)
+  def list do
+    :dets.match(__MODULE__, :"$1")
+    |> Enum.sort()
+    |> Enum.reverse()
+    |> Enum.map(fn([{_id, drawing}]) -> drawing end)
   end
 
-  def add_drawing(entry) when is_map(entry) do
-    Agent.update(__MODULE__, fn (list) ->
-      [entry | list] |> Enum.take(300)
-    end)
+  defp publish_updated_list do
     ShowoffWeb.Endpoint.broadcast(
       "recent_drawings",
       "update",
-      %{recent: get_list()}
+      %{recent: list()}
     )
-  end
-
-  def get_list do
-    Agent.get(__MODULE__, &(&1))
   end
 end

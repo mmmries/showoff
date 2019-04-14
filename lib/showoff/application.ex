@@ -6,12 +6,10 @@ defmodule Showoff.Application do
   use Application
 
   def start(_type, _args) do
+    open_recent_drawings_table()
+
     # List all child processes to be supervised
-    children = [
-      # Start the endpoint when the application starts
-      ShowoffWeb.Endpoint,
-      {Showoff.RecentDrawings, []}
-    ]
+    children = [ShowoffWeb.Endpoint]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
@@ -24,5 +22,12 @@ defmodule Showoff.Application do
   def config_change(changed, _new, removed) do
     ShowoffWeb.Endpoint.config_change(changed, removed)
     :ok
+  end
+
+  defp open_recent_drawings_table do
+    filename = Application.app_dir(:showoff)
+               |> Path.join("priv/drawings/recent.dets")
+               |> String.to_charlist()
+    {:ok, _table_name} = :dets.open_file(Showoff.RecentDrawings, file: filename)
   end
 end

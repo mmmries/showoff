@@ -1,4 +1,13 @@
 defmodule Showoff do
+  alias Showoff.Drawing
+
+  def text_to_drawing(text) do
+    case text_to_svg(text) do
+      {:ok, svg} -> {:ok, %Drawing{svg: svg, text: text}}
+      {:error, err} -> {:error, err}
+    end
+  end
+
   def text_to_svg(text) do
     case Showoff.TermParser.parse(text) do
       {:ok, term} -> term_to_svg(term)

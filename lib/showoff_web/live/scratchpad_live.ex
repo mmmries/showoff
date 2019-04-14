@@ -1,7 +1,7 @@
 defmodule ShowoffWeb.ScratchpadLive do
   use Phoenix.LiveView
   import Phoenix.HTML.Tag
-  require Logger
+  alias Showoff.{Examples, RecentDrawings}
 
   def mount(%{}, socket) do
     if connected?(socket) do
@@ -12,7 +12,7 @@ defmodule ShowoffWeb.ScratchpadLive do
              |> update_drawing("")
              |> assign(:drawing_text, "")
              |> assign(:err, "")
-             |> assign(:recent, Showoff.RecentDrawings.get_list())
+             |> assign(:recent, RecentDrawings.list())
     {:ok, socket}
   end
 
@@ -26,10 +26,9 @@ defmodule ShowoffWeb.ScratchpadLive do
   end
 
   def handle_event("publish", %{"drawing_text" => text}, socket) do
-    case Showoff.text_to_svg(text) do
-      {:ok, svg} ->
-        drawing = %{drawing_text: text, svg: svg}
-        Showoff.RecentDrawings.add_drawing(drawing)
+    case Showoff.text_to_drawing(text) do
+      {:ok, drawing} ->
+        RecentDrawings.add_drawing(drawing)
         {:noreply, assign(socket, :err, "")}
       {:error, _err} ->
         socket = socket |> assign(:err, "an error occured trying to draw that") |> assign(:drawing_text, text)
@@ -60,8 +59,8 @@ defmodule ShowoffWeb.ScratchpadLive do
           <p class="error"><%= @err %></p>
           <h4>Examples - Click to Try Them Out</h4>
           <div class="row examples">
-            <%= for example <- Showoff.Examples.rendered_list() do %>
-              <%= content_tag(:div, {:safe, example.svg}, class: "example", phx_click: "example", phx_value: example.drawing_text) %>
+            <%= for example <- Showoff.Examples.list() do %>
+              <%= content_tag(:div, {:safe, example.svg}, class: "example", phx_click: "example", phx_value: example.text) %>
             <% end %>
           </div>
         </div>
@@ -73,7 +72,7 @@ defmodule ShowoffWeb.ScratchpadLive do
 
       <div class="row recents">
         <%= for recent <- @recent do %>
-          <%= content_tag(:div, {:safe, recent.svg}, class: "example", phx_click: "example", phx_value: recent.drawing_text) %>
+          <%= content_tag(:div, {:safe, recent.svg}, class: "example", phx_click: "example", phx_value: recent.text) %>
         <% end %>
       </div>
     """
