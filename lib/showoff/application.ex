@@ -9,7 +9,10 @@ defmodule Showoff.Application do
     open_recent_drawings_table()
 
     # List all child processes to be supervised
-    children = [ShowoffWeb.Endpoint]
+    children = [
+      {Phoenix.PubSub, [name: Showoff.PubSub, adapter: Phoenix.PubSub.PG2]},
+      ShowoffWeb.Endpoint
+    ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options

@@ -33,12 +33,11 @@ defmodule Showoff.MixProject do
   defp deps do
     [
       {:chunky_svg, "~> 0.0.4"},
-      {:distillery, "~> 2.0"},
-      {:phoenix, "~> 1.4.3"},
-      {:phoenix_pubsub, "~> 1.1"},
+      {:phoenix, "~> 1.5"},
+      {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
-      {:phoenix_live_view, github: "phoenixframework/phoenix_live_view"},
+      {:phoenix_live_view, "~> 0.14"},
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"}

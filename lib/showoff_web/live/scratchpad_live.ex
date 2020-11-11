@@ -1,9 +1,9 @@
 defmodule ShowoffWeb.ScratchpadLive do
   use Phoenix.LiveView
   import Phoenix.HTML.Tag
-  alias Showoff.{Examples, RecentDrawings}
+  alias Showoff.RecentDrawings
 
-  def mount(%{}, socket) do
+  def mount(_params, _session, socket) do
     if connected?(socket) do
       :ok = ShowoffWeb.Endpoint.subscribe("recent_drawings")
     end
@@ -13,14 +13,15 @@ defmodule ShowoffWeb.ScratchpadLive do
              |> assign(:drawing_text, "")
              |> assign(:err, "")
              |> assign(:recent, RecentDrawings.list())
+             |> assign(:svg, nil)
     {:ok, socket}
   end
 
   def handle_event("draw", %{"drawing_text" => text}, socket) do
-    socket = socket |> update_drawing(text)
+    socket = socket |> update_drawing(text) |> assign(:drawing_text, text)
     {:noreply, socket}
   end
-  def handle_event("example", text, socket) do
+  def handle_event("example", %{"text" => text}, socket) do
     socket = socket |> update_drawing(text) |> assign(:drawing_text, text)
     {:noreply, socket}
   end
@@ -60,7 +61,7 @@ defmodule ShowoffWeb.ScratchpadLive do
           <h4>Examples - Click to Try Them Out</h4>
           <div class="row examples">
             <%= for example <- Showoff.Examples.list() do %>
-              <%= content_tag(:div, {:safe, example.svg}, class: "example", phx_click: "example", phx_value: example.text) %>
+              <%= content_tag(:div, {:safe, example.svg}, class: "example", phx_click: "example", phx_value_text: example.text) %>
             <% end %>
           </div>
         </div>
@@ -72,7 +73,7 @@ defmodule ShowoffWeb.ScratchpadLive do
 
       <div class="row recents">
         <%= for recent <- @recent do %>
-          <%= content_tag(:div, {:safe, recent.svg}, class: "example", phx_click: "example", phx_value: recent.text) %>
+          <%= content_tag(:div, {:safe, recent.svg}, class: "example", phx_click: "example", phx_value_text: recent.text) %>
         <% end %>
       </div>
     """
