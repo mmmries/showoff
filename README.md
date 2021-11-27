@@ -1,3 +1,8 @@
+# ARCHIVED
+
+This project has been archived and the functionality has been moved to https://github.com/mmmries/blog
+You can still get to the site via https://showoff.riesd.com/
+
 # Showoff
 
 An Elixir application for playing around with SVG drawing and sharing your images with others.
